@@ -10,3 +10,6 @@ const Mydata = mongoose.model("Mydataaa", dataSchema);
 
 // Export Modal
 module.exports = Mydata;
+
+
+mongoose.model("hammam", dataSchema)

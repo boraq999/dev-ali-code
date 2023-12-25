@@ -1,6 +1,8 @@
 const express = require("express");
 const app = express();
 const port = 8000;
+// to use ejs
+app.set("view engine", "ejs");
 // to avilable res.body
 app.use(express.urlencoded({ extended: true }));
 // connect DB mongoose
@@ -19,10 +21,20 @@ mongoose
 // Import Schema
 const Mydata = require("./models/mydataSchema");
 
-// Create url -------------------------------------
+// Create url ----------------------------------------------
+// =========================================================
 app.get("/", (req, res) => {
-  res.sendFile("./views/index.html", { root: __dirname });
+  // res.sendFile("./views/index.html", { root: __dirname });
+  Mydata.find()
+    .then((result) => {
+      console.log(result);
+      res.render("index.ejs", { myData: result });
+    })
+    .catch((err) => {
+      console.log("Error");
+    });
 });
+// ________________________________________________________
 app.post("/", (req, res) => {
   console.log(req.body);
 
@@ -36,9 +48,10 @@ app.post("/", (req, res) => {
       res.send("Error in send to DB mongoose");
     });
   app.get("/index.html", (req, res) => {
-    res.sendFile("./views/sendData.html", { root: __dirname });
+    res.render("sendData", { myTitle: "Send data" });
   });
 });
+// ________________________________________________________
 
 app.listen(port, () => {
   console.log(`http://localhost:${port}`);
