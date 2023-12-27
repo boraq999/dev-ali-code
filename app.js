@@ -35,32 +35,38 @@ mongoose
   });
 
 // STUB Schema
-const Mydata = require("./models/mydataSchema");
+const User = require("./models/customerSchema");
 
-// ANCHOR  Create url ----------------------------------------------
+// ANCHOR  get request ----------------------------------------------
 // =========================================================
 app.get("/", (req, res) => {
   // res.sendFile("./views/index.html", { root: __dirname });
-  res.render("index.ejs",{});
-
+  res.render("index.ejs", {});
 });
 // --------------------------------
 app.get("/user/add.ejs", (req, res) => {
-  res.render("user/add.ejs",{});
-
+  res.render("user/add.ejs", {});
 });
 // --------------------------------
 app.get("/user/view.ejs", (req, res) => {
-  res.render("user/view.ejs",{});
-
+  res.render("user/view.ejs", {});
 });
 // --------------------------------
 app.get("/user/edit.ejs", (req, res) => {
-  res.render("user/edit.ejs",{});
-
+  res.render("user/edit.ejs", {});
 });
 // --------------------------------
-
+// ANCHOR  post request ----------------------------------------------
+app.post("/user/add.ejs", (req, res) => {
+  console.log(req.body);
+  const newUser = new User(req.body);
+  newUser
+    .save()
+    .then(() => {
+      res.redirect("/user/add.ejs");
+    })
+    .catch(() => {});
+});
 // ________________________________________________________
 
 app.listen(port, () => {
