@@ -41,8 +41,26 @@ const User = require("./models/customerSchema");
 // =========================================================
 app.get("/", (req, res) => {
   // res.sendFile("./views/index.html", { root: __dirname });
-  res.render("index.ejs", {});
+  User.find()
+    .then((result) => {
+      res.render("index.ejs", { users: result });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 });
+
+app.get("/user/:id", (req, res) => {
+  let id = req.params.id;
+  User.findById(id)
+    .then((result) => {
+      res.render("user/view.ejs", {user:result});
+    })
+    .catch((err) => {
+      res.send("Err");
+    });
+});
+
 // --------------------------------
 app.get("/user/add.ejs", (req, res) => {
   res.render("user/add.ejs", {});
@@ -63,7 +81,7 @@ app.post("/user/add.ejs", (req, res) => {
   newUser
     .save()
     .then(() => {
-      res.redirect("/user/add.ejs");
+      res.redirect("/");
     })
     .catch(() => {});
 });
